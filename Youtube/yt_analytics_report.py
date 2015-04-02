@@ -97,7 +97,7 @@ def run_analytics_report(youtube_analytics, options):
     sort=options.sort
   ).execute()
 
-  print "Analytics Data for channel: %s" % channel_id
+  print "Analytics Data for channel: %s" % options.channel_id
 
   for column_header in analytics_query_response.get("columnHeaders", []):
     print "%-20s" % column_header["name"],
