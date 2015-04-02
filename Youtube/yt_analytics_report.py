@@ -59,7 +59,7 @@ def get_authenticated_services(args):
     scope=" ".join(YOUTUBE_SCOPES),
     message=MISSING_CLIENT_SECRETS_MESSAGE)
 
-  storage = Storage("%s-oauth2.json" % sys.argv[0])
+  storage = Storage("%s.dat" % YOUTUBE_API_SERVICE_NAME)
   credentials = storage.get()
 
   if credentials is None or credentials.invalid:
