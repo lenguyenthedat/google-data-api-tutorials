@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # Original version of this file:
-# https://github.com/googleads/googleads-adsense-examples/blob/master/python/v1.4/generate_report.py
+# https://github.com/youtube/api-samples/blob/master/python/yt_analytics_report.py
 
 from datetime import datetime, timedelta
 import httplib2
