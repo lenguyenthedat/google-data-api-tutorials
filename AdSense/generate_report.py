@@ -12,6 +12,11 @@ import sys
 from apiclient import sample_tools
 from oauth2client import client
 
+CLIENT_SECRETS_FILE = "../client_secrets.json"
+API_SCOPES = ["https://www.googleapis.com/auth/adsense.readonly"]
+API_SERVICE_NAME = "adsense"
+API_VERSION = "v1.4"
+
 def main(argv):
   now = datetime.now()
   one_day_ago = (now - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -33,8 +38,8 @@ def main(argv):
 
   # Authenticate and construct service.
   service, flags = sample_tools.init(
-      argv, 'adsense', 'v1.4', __doc__, '../client_secrets.json', parents=[argparser],
-      scope='https://www.googleapis.com/auth/adsense.readonly',)
+      argv, API_SERVICE_NAME, API_VERSION, __doc__, CLIENT_SECRETS_FILE, parents=[argparser],
+      scope=API_SCOPES)
 
   try:
     # Retrieve report.

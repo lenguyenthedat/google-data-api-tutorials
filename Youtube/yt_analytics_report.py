@@ -14,52 +14,17 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 
-# The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
-# the OAuth 2.0 information for this application, including its client_id and
-# client_secret. You can acquire an OAuth 2.0 client ID and client secret from
-# the {{ Google Cloud Console }} at
-# {{ https://cloud.google.com/console }}.
-# Please ensure that you have enabled the YouTube Data and YouTube Analytics
-# APIs for your project.
-# For more information about using OAuth2 to access the YouTube Data API, see:
-#   https://developers.google.com/youtube/v3/guides/authentication
-# For more information about the client_secrets.json file format, see:
-#   https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
 CLIENT_SECRETS_FILE = "../client_secrets.json"
-
-# These OAuth 2.0 access scopes allow for read-only access to the authenticated
-# user's account for both YouTube Data API resources and YouTube Analytics Data.
-YOUTUBE_SCOPES = ["https://www.googleapis.com/auth/youtube.readonly",
+API_SCOPES = ["https://www.googleapis.com/auth/youtube.readonly",
   "https://www.googleapis.com/auth/yt-analytics.readonly"]
-YOUTUBE_API_SERVICE_NAME = "youtube"
-YOUTUBE_API_VERSION = "v3"
-YOUTUBE_ANALYTICS_API_SERVICE_NAME = "youtubeAnalytics"
-YOUTUBE_ANALYTICS_API_VERSION = "v1"
-
-# This variable defines a message to display if the CLIENT_SECRETS_FILE is
-# missing.
-MISSING_CLIENT_SECRETS_MESSAGE = """
-WARNING: Please configure OAuth 2.0
-
-To make this sample run you will need to populate the client_secrets.json file
-found at:
-
-   %s
-
-with information from the {{ Cloud Console }}
-{{ https://cloud.google.com/console }}
-
-For more information about the client_secrets.json file format, please visit:
-https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
-""" % os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                   CLIENT_SECRETS_FILE))
+API_SERVICE_NAME = "youtubeAnalytics"
+API_VERSION = "v1"
 
 def get_authenticated_services(args):
   flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
-    scope=" ".join(YOUTUBE_SCOPES),
-    message=MISSING_CLIENT_SECRETS_MESSAGE)
+    scope=" ".join(API_SCOPES))
 
-  storage = Storage("%s.dat" % YOUTUBE_API_SERVICE_NAME)
+  storage = Storage("%s.dat" % API_SERVICE_NAME)
   credentials = storage.get()
 
   if credentials is None or credentials.invalid:
@@ -67,20 +32,10 @@ def get_authenticated_services(args):
 
   http = credentials.authorize(httplib2.Http())
 
-  youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-    http=http)
-  youtube_analytics = build(YOUTUBE_ANALYTICS_API_SERVICE_NAME,
-    YOUTUBE_ANALYTICS_API_VERSION, http=http)
+  youtube_analytics = build(API_SERVICE_NAME,
+    API_VERSION, http=http)
 
-  return (youtube, youtube_analytics)
-
-def get_channel_id(youtube):
-  channels_list_response = youtube.channels().list(
-    mine=True,
-    part="id"
-  ).execute()
-
-  return channels_list_response["items"][0]["id"]
+  return youtube_analytics
 
 def run_analytics_report(youtube_analytics, options):
   # Call the Analytics API to retrieve a report. For a list of available
@@ -129,7 +84,7 @@ if __name__ == "__main__":
   argparser.add_argument("--sort", help="Sort order", default="-views")
   args = argparser.parse_args()
 
-  (youtube, youtube_analytics) = get_authenticated_services(args)
+  youtube_analytics = get_authenticated_services(args)
   try:
     run_analytics_report(youtube_analytics, args)
   except HttpError, e:
