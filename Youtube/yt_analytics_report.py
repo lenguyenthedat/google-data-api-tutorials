@@ -63,7 +63,7 @@ def run_analytics_report(youtube_analytics, options):
       print "%-20s" % value,
     print
 
-if __name__ == "__main__":
+def main():
   now = datetime.now()
   one_day_ago = (now - timedelta(days=1)).strftime("%Y-%m-%d")
   one_week_ago = (now - timedelta(days=7)).strftime("%Y-%m-%d")
@@ -89,3 +89,6 @@ if __name__ == "__main__":
     run_analytics_report(youtube_analytics, args)
   except HttpError, e:
     print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+
+if __name__ == '__main__':
+  main()
