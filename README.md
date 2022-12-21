@@ -1,9 +1,9 @@
 # google-data-api-tutorials
 Set of tutorials for using Google Products' APIs to retrieve your data.
 
-**Youtube API Tutorial**: http://lenguyenthedat.com/youtube-analytics-api/
+**Youtube (Analytics) API Tutorial**: http://lenguyenthedat.github.io/youtube-analytics-api/
 
-**Google AdSense API Tutorial**: http://lenguyenthedat.com/google-adsense-api/
+**Google AdSense (Management) API Tutorial**: http://lenguyenthedat.github.io/google-adsense-api/
 
 **Google AdExchange API Tutorial**: TBD
 
